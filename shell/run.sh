@@ -34,8 +34,8 @@ else
   documentRoot="$projectsPath/$projectName/$documentRoot";
 fi
 
-projectPath="$projectsPath/$projectName";
-mkdir -m 777 "$projectPath";
+#projectPath="$projectsPath/$projectName";
+#mkdir -m 777 "$projectPath";
 
 nginxConf="/etc/nginx/sites-available/$projectName";
 nginxConfSymbolic="/etc/nginx/sites-enabled/$projectName";
