@@ -1,5 +1,6 @@
 #!/bin/bash
 # shellcheck disable=SC2164
+# shellcheck disable=SC2188
 
 projectsPath=/var/www;
 current=$PWD
@@ -11,7 +12,7 @@ else
   apt install -y apache2 nginx php7.2 php7.2-json php7.2-xml php7.2-xmlrpc php7.2-zip php7.2-readline php7.2-mbstring php7.2-gd php7.2-curl php7.2-common php7.2-cli php7.2-cgi libapache2-mod-php7.2 libapache2-mpm-itk curl php-cli php-mbstring unzip composer
 fi
 
-apt install -y libapache2-mod-rpaf libapache2-mod-remoteip libapache2-mod-rewrite
+apt install -y libapache2-mod-rpaf
 
 a2enmod rewrite
 a2enmod remoteip
@@ -33,6 +34,9 @@ if [ "$documentRoot" = "" ]; then
 else
   documentRoot="$projectsPath/$projectName/$documentRoot";
 fi
+
+> /etc/apache2/ports.conf
+echo "Listen 8080" > /etc/apache2/ports.conf
 
 #projectPath="$projectsPath/$projectName";
 #mkdir -m 777 "$projectPath";
@@ -59,9 +63,9 @@ case "$projectType" in
 		cp "$rpafMAConfPath" "/etc/apache2/mods-available/rpaf.conf";
 		ln -s "$apacheConf" "$apacheConfSymbolic";
 		ln -s "$nginxConf" "$nginxConfSymbolic";
-		ln -s "$nginxConf" "$nginxConfSymbolic";
+		ln -s "/etc/apache2/mods-available/rpaf.conf" "/etc/apache2/mods-enabled/rpaf.conf";
 
-		read -p "Directory path for Apache [/]: " directoryPath;
+		directoryPath=""
 		if [ "$directoryPath" = "" ]; then
 		  directoryPath="$projectsPath/$projectName";
 		else

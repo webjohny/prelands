@@ -1,6 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2164
 
+apt update
 apt install -y git
 
 mkdir -m 777 /var/www
